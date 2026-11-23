@@ -17,6 +17,28 @@
   let editingId = null;
   let color = COLORS[0];
 
+  const REL = window.HOLIDAY_RELIGIONS || {};
+  const HKEY = 'mycal.hiddenReligions.v1';
+  let hidden = new Set((() => { try { return JSON.parse(localStorage.getItem(HKEY)) || []; } catch { return []; } })());
+  const holidays = (d) => (window.holidaysOn ? window.holidaysOn(d) : []).filter((h) => !hidden.has(h.rel));
+
+  function buildChips() {
+    const box = $('#chips');
+    box.innerHTML = '';
+    Object.entries(REL).forEach(([k, r]) => {
+      const b = document.createElement('button');
+      b.className = 'chip' + (hidden.has(k) ? '' : ' on');
+      b.style.setProperty('--c', r.color);
+      b.innerHTML = `<i></i>${r.label}`;
+      b.onclick = () => {
+        hidden.has(k) ? hidden.delete(k) : hidden.add(k);
+        try { localStorage.setItem(HKEY, JSON.stringify([...hidden])); } catch {}
+        buildChips(); render();
+      };
+      box.appendChild(b);
+    });
+  }
+
   const byDate = (d) => events.filter((e) => e.date === d)
     .sort((a, b) => (a.time || '99:99').localeCompare(b.time || '99:99'));
 
@@ -34,7 +56,11 @@
       cell.className = 'cell' + (d.getMonth() !== view.getMonth() ? ' out' : '') +
         (k === todayIso ? ' today' : '') + (k === selected ? ' sel' : '');
       const evs = byDate(k).slice(0, 4);
-      cell.innerHTML = `<span class="num">${d.getDate()}</span><span class="dots">${evs.map((e) => `<i style="background:${e.color}"></i>`).join('')}</span>`;
+      const hs = holidays(k);
+      const hol = hs.length
+        ? `<span class="hol" style="--c:${REL[hs[0].rel].color}">${hs[0].name}${hs.length > 1 ? ' +' + (hs.length - 1) : ''}</span>`
+        : '';
+      cell.innerHTML = `<span class="num">${d.getDate()}</span>${hol}<span class="dots">${evs.map((e) => `<i style="background:${e.color}"></i>`).join('')}</span>`;
       cell.onclick = () => { selected = k; if (d.getMonth() !== view.getMonth()) { view = new Date(d.getFullYear(), d.getMonth(), 1); } render(); };
       grid.appendChild(cell);
     }
@@ -46,8 +72,15 @@
     $('#agendaTitle').textContent = d.toLocaleDateString(undefined, { weekday: 'long', day: 'numeric', month: 'long' });
     const list = $('#agendaList');
     list.innerHTML = '';
+    holidays(selected).forEach((h) => {
+      const li = document.createElement('li');
+      li.className = 'hl';
+      li.style.setProperty('--c', REL[h.rel].color);
+      li.innerHTML = `<span class="t">${REL[h.rel].label}</span><span class="b">${h.name}</span>`;
+      list.appendChild(li);
+    });
     const evs = byDate(selected);
-    if (!evs.length) { list.innerHTML = '<li class="empty" style="background:none;border:0;padding:0">No events. Tap + to add one.</li>'; return; }
+    if (!evs.length && !list.children.length) { list.innerHTML = '<li class="empty" style="background:none;border:0;padding:0">No events. Tap + to add one.</li>'; return; }
     evs.forEach((e) => {
       const li = document.createElement('li');
       li.style.setProperty('--c', e.color);
@@ -136,6 +169,7 @@
     e.target.value = '';
   };
 
+  buildChips();
   render();
 
   if ('serviceWorker' in navigator) {

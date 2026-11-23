@@ -1,7 +1,7 @@
 // Bump CACHE when you change any file, so phones pick up the update.
-const CACHE = 'my-calendar-v1';
+const CACHE = 'my-calendar-v2';
 const FILES = [
-  './', 'index.html', 'style.css', 'app.js', 'manifest.webmanifest',
+  './', 'index.html', 'style.css', 'app.js', 'holidays.js', 'manifest.webmanifest',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/icon-maskable-512.png',
 ];
 

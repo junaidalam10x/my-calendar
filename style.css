@@ -29,6 +29,20 @@ header button:active { background: var(--card); }
 .dots { display: flex; gap: 3px; flex-wrap: wrap; justify-content: center; max-width: 40px; }
 .dots i { width: 6px; height: 6px; border-radius: 50%; display: block; }
 
+.chips { display: flex; gap: 6px; overflow-x: auto; padding: 4px 12px 10px; scrollbar-width: none; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: none; display: flex; align-items: center; gap: 6px; padding: 5px 10px; border-radius: 999px;
+  border: 1px solid var(--line); font-size: .8rem; color: var(--muted); }
+.chip i { width: 8px; height: 8px; border-radius: 50%; background: var(--c); }
+.chip.on { color: var(--fg); border-color: var(--c); background: color-mix(in srgb, var(--c) 15%, transparent); }
+.cell .hol { width: 100%; font-size: 9px; line-height: 1.2; text-align: center; padding: 1px 2px; border-radius: 4px;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--fg);
+  background: color-mix(in srgb, var(--c) 25%, transparent); border-bottom: 2px solid var(--c); }
+.cell { min-height: 70px; }
+.agenda li.hl { background: color-mix(in srgb, var(--c) 12%, var(--card)); }
+.agenda li.hl .t { color: var(--c); font-weight: 600; }
+.note { text-align: center; color: var(--muted); font-size: .7rem; padding: 0 20px; margin: 0; }
+
 .agenda { padding: 16px 14px 0; }
 .agenda h2 { font-size: 1rem; margin: 0 0 8px; color: var(--muted); font-weight: 600; }
 .agenda ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }

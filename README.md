@@ -13,4 +13,4 @@ A personal calendar PWA. Events are saved on the device (localStorage). Works of
 - iPhone (Safari): Share > Add to Home Screen.
 
 ## Updating
-Edit files, then change `CACHE = 'my-calendar-v1'` in `sw.js` to `v2`, `v3`, ... and push.
+Edit files, then change `CACHE = 'my-calendar-v2'` in `sw.js` to `v2`, `v3`, ... and push.

@@ -21,6 +21,8 @@
     <button id="today" class="pill">Today</button>
   </header>
 
+  <div id="chips" class="chips" aria-label="Show holidays by religion"></div>
+
   <main>
     <div class="weekdays">
       <span>S</span><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span>
@@ -37,6 +39,7 @@
       <button id="import" class="link">Import backup</button>
       <input id="file" type="file" accept="application/json" hidden>
     </footer>
+    <p class="note">Holidays: 2026–2027 festivals + fixed &amp; Easter dates for any year. Islamic dates may shift ±1 day with moon sighting.</p>
   </main>
 
   <button id="add" class="fab" aria-label="Add event">+</button>
@@ -60,6 +63,7 @@
     </form>
   </dialog>
 
+  <script src="holidays.js"></script>
   <script src="app.js"></script>
 </body>
 </html>
